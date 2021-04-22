@@ -27,7 +27,7 @@ class OrdenesBloc extends Bloc<OrdenesEvent, OrdenesState> {
   }
 
   Future<List<OrdenesModel>> cargarOrdenes() async {
-    final url = '$_url/Pedido.json';
+    final url = '$_url/Ordenes.json';
 
     final resp = await http.get(url);
 

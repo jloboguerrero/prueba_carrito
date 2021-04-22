@@ -227,9 +227,25 @@ class _CarritoPageState extends State<CarritoPage> {
                   child: Text("CONFIRMAR"),
                   onPressed: () {
                     final ordenProvider = BlocProvider.of<OrdenesBloc>(context);
+
+                    var cantidad = 0;
+                    var total = 0;
+
+                    for (var i = 0; i < pedidoBloc.state.pedidos.length; i++) {
+                      cantidad =
+                          cantidad + pedidoBloc.state.pedidos[i].cantidad;
+                      total = total +
+                          (pedidoBloc.state.pedidos[i].cantidad *
+                              pedidoBloc.state.pedidos[i].precio);
+                    }
+
                     final orden = OrdenesModel(
-                        cantidad: 2, total: 56, estado: 'Confirmado');
+                        cantidad: cantidad, total: total, estado: 'Pending');
                     ordenProvider.add(CrearOrden(orden));
+
+                    for (var i = 0; i < pedidoBloc.state.pedidos.length; i++) {
+                      pedidoBloc.add(BorrarPedido(pedidoBloc.state.pedidos[i]));
+                    }
 
                     Navigator.pushNamed(context, 'orders');
                   },

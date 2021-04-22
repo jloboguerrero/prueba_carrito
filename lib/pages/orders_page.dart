@@ -47,9 +47,47 @@ class OrdersPage extends StatelessWidget {
               if (state.existeOrden) {
                 return ListView.builder(
                   itemCount: state.ordenes.length,
-                  itemBuilder: (_, i) => (Card(
-                    child: Text('data'),
-                  )),
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (_, i) {
+                    return Card(
+                      elevation: 3,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                'Id: ${state.ordenes[i].id_base}',
+                                style: TextStyle(fontSize: 13),
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'Cantidad: ${state.ordenes[i].cantidad}',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              SizedBox(height: 5),
+                              Text(
+                                'Monto: ${state.ordenes[i].total}',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'Estado: ${state.ordenes[i].estado}',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                              icon: Icon(Icons.add_circle_outline),
+                              onPressed: () {
+                                print('change');
+                              })
+                        ],
+                      ),
+                    );
+                  },
                 );
               } else {
                 return Center(

@@ -31,6 +31,24 @@ class PedidoModel {
   String fotourl;
   String id_base;
 
+  PedidoModel copyWith({
+    int cantidad,
+    int id,
+    int idCarrito,
+    String nombre,
+    int precio,
+    String fotourl,
+    String id_base,
+  }) =>
+      PedidoModel(
+          cantidad: cantidad ?? this.cantidad,
+          idCarrito: idCarrito ?? this.idCarrito,
+          fotourl: fotourl ?? this.fotourl,
+          id: id ?? this.id,
+          nombre: nombre ?? this.nombre,
+          id_base: id_base ?? this.id_base,
+          precio: precio ?? this.precio);
+
   factory PedidoModel.fromJson(Map<String, dynamic> json) => PedidoModel(
         cantidad: json["cantidad"],
         id: json["id"],

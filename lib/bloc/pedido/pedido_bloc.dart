@@ -59,6 +59,15 @@ class PedidoBloc extends Bloc<PedidoEvent, PedidoState> {
     return pedidos;
   }
 
+  Future<int> borrarPedido(String id) async {
+    final url = '$_url/Pedido/$id.json';
+    final resp = await http.delete(url);
+
+    print(json.decode(resp.body));
+
+    return 1;
+  }
+
   @override
   Stream<PedidoState> mapEventToState(PedidoEvent event) async* {
     if (event is ActivarPedido) {
@@ -73,6 +82,9 @@ class PedidoBloc extends Bloc<PedidoEvent, PedidoState> {
     } else if (event is EditPedido) {
       final edit = await editarPedido(event.pedido);
       print(edit);
+      yield state.copyWith(pedido: event.pedido);
+    } else if (event is BorrarPedido) {
+      await borrarPedido(event.pedido.id_base);
       yield state.copyWith(pedido: event.pedido);
     }
   }

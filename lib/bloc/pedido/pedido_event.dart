@@ -19,3 +19,10 @@ class EditPedido extends PedidoEvent {
   final PedidoModel pedido;
   EditPedido(this.pedido);
 }
+
+class BorrarPedido extends PedidoEvent {
+  // final String id_base;
+  // BorrarPedido(this.id_base);
+  final PedidoModel pedido;
+  BorrarPedido(this.pedido);
+}
