@@ -159,31 +159,48 @@ class ListaProductos extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 1.0, vertical: 5.0),
                   child: Column(
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Column(
-                              children: <Widget>[
-                                Text(
-                                  '${productos[i].nombre}',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                      GestureDetector(
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      '${productos[i].nombre}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text('${productos[i].descripcion}'),
+                                    SizedBox(height: 30),
+                                    Text('\$${productos[i].precio} Dolars'),
+                                  ],
                                 ),
-                                SizedBox(height: 10),
-                                Text('${productos[i].descripcion}'),
-                                SizedBox(height: 30),
-                                Text('\$${productos[i].precio} Dolars'),
-                              ],
-                            ),
+                              ),
+                              SizedBox(width: 30),
+                              Expanded(
+                                  child: Container(
+                                width: 120,
+                                height: 120,
+                                child: Image.network('${productos[i].fotourl}'),
+                              ))
+                            ],
                           ),
-                          SizedBox(width: 30),
-                          Expanded(
-                              child: Container(
-                            width: 120,
-                            height: 120,
-                            child: Image.network('${productos[i].fotourl}'),
-                          ))
-                        ],
-                      )
+                          onTap: () {
+                            print('${productos[i].id}');
+                            print('${productos[i].fotourl}');
+                            final productoBloc =
+                                BlocProvider.of<ProductoBloc>(context);
+                            final newProduct = ProductoModel(
+                                descripcion: '${productos[i].descripcion}',
+                                disponible: true,
+                                fotourl: '${productos[i].fotourl}',
+                                id: productos[i].id,
+                                nombre: '${productos[i].nombre}',
+                                precio: productos[i].precio);
+                            productoBloc.add(AbreProducto(newProduct));
+                            Navigator.pushNamed(context, 'descripcion');
+                          })
                     ],
                   ),
                 ),
@@ -191,7 +208,35 @@ class ListaProductos extends StatelessWidget {
                   color: Colors.green,
                 )
               ],
-            )),
+            )
+            /* Card(
+            elevation: 2,
+            child: ListTile(
+                isThreeLine: true,
+                title: Text('${productos[i].nombre}'),
+                subtitle: Text(
+                    '${productos[i].descripcion} \n\n${productos[i].precio} \$DOLARS'),
+                trailing: Container(
+                  width: 70.0,
+                  height: 50.0,
+                  child: Image.network('${productos[i].fotourl}'),
+                ),
+                onTap: () {
+                  print('${productos[i].id}');
+                  print('${productos[i].fotourl}');
+                  final productoBloc = BlocProvider.of<ProductoBloc>(context);
+                  final newProduct = ProductoModel(
+                      descripcion: '${productos[i].descripcion}',
+                      disponible: true,
+                      fotourl: '${productos[i].fotourl}',
+                      id: productos[i].id,
+                      nombre: '${productos[i].nombre}',
+                      precio: productos[i].precio);
+                  productoBloc.add(AbreProducto(newProduct));
+                  Navigator.pushNamed(context, 'descripcion');
+                }),
+          ), */
+            ),
         physics: BouncingScrollPhysics(),
         padding: EdgeInsets.all(3.0),
       ),

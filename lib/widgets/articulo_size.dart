@@ -16,8 +16,7 @@ class ArticuloSizePreview extends StatelessWidget {
           width: double.infinity,
           height: 320,
           decoration: BoxDecoration(
-              color: Color(0xff91CF50),
-              borderRadius: BorderRadius.circular(50)),
+              color: Colors.grey, borderRadius: BorderRadius.circular(50)),
           child: Column(
             children: <Widget>[_ArticuloConSombra()],
           ),
