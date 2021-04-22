@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carritocompras/bloc/ordenes/ordenes_bloc.dart';
+import 'package:carritocompras/bloc/pedido/pedido_bloc.dart';
+import 'package:carritocompras/models/ordenes_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CarritoPage extends StatefulWidget {
   @override
@@ -10,9 +14,10 @@ class CarritoPage extends StatefulWidget {
 class _CarritoPageState extends State<CarritoPage> {
   @override
   Widget build(BuildContext context) {
+    final pedidoBloc = BlocProvider.of<PedidoBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalle de pedido',
+        title: Text('Detalle del pedido',
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
@@ -34,132 +39,181 @@ class _CarritoPageState extends State<CarritoPage> {
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 2.0),
-                        child: Column(
+              BlocBuilder<PedidoBloc, PedidoState>(
+                builder: (_, state) {
+                  if (state.existePedido) {
+                    return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: state.pedidos.length,
+                      itemBuilder: (context, index) {
+                        final multi = state.pedidos[index].cantidad *
+                            state.pedidos[index].precio;
+
+                        return Column(
                           children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                    child: Container(
-                                  width: 150,
-                                  height: 150,
-                                  child: CachedNetworkImage(
-                                      imageUrl:
-                                          'https://res.cloudinary.com/dk8wa52ru/image/upload/v1616713712/q9e86vmuzxytckslrbvn.jpg', //'${item.image}' + '?alt=media',
-                                      fit: BoxFit.cover,
-                                      placeholder: (_, __) {
-                                        return Center(
-                                            child: CupertinoActivityIndicator(
-                                          radius: 15,
-                                        ));
-                                      }),
-                                )),
-                                Column(
-                                  children: <Widget>[
-                                    Text('Test01', //item.name,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.0,
-                                            color: Colors.black)),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          width: 120,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                              color: Color(0xff91CF50),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  blurRadius: 6.0,
-                                                  color: Colors.blue[400],
-                                                  offset: Offset(0.0, 1.0),
-                                                )
-                                              ],
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(50.0),
-                                              )),
-                                          margin: EdgeInsets.only(top: 20.0),
-                                          padding: EdgeInsets.all(2.0),
-                                          child: Row(
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 2.0),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                          child: Container(
+                                        width: 100,
+                                        height: 100,
+                                        child: CachedNetworkImage(
+                                            imageUrl:
+                                                '${state.pedidos[index].fotourl}', //'${item.image}' + '?alt=media',
+                                            fit: BoxFit.contain,
+                                            placeholder: (_, __) {
+                                              return Center(
+                                                  child:
+                                                      CupertinoActivityIndicator(
+                                                radius: 15,
+                                              ));
+                                            }),
+                                      )),
+                                      SizedBox(width: 30),
+                                      Column(
+                                        children: <Widget>[
+                                          Text(
+                                              '${state.pedidos[index].nombre}', //item.name,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16.0,
+                                                  color: Colors.black)),
+                                          Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.center,
                                             children: <Widget>[
-                                              SizedBox(
-                                                height: 8.0,
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.remove),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    // _cart[index].quantity--;
-                                                    // valorTotal(_cart);
-                                                  });
-                                                },
-                                                color: Colors.white,
-                                              ),
-                                              Text(
-                                                  '3', //'${_cart[index].quantity}',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 22.0,
-                                                      color: Colors.white)),
-                                              IconButton(
-                                                icon: Icon(Icons.add),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    // _cart[index].quantity++;
-                                                    // valorTotal(_cart);
-                                                  });
-                                                },
-                                                color: Colors.white,
-                                              ),
-                                              SizedBox(
-                                                height: 8.0,
+                                              Container(
+                                                width: 120,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                    color: Color(0xff91CF50),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        blurRadius: 6.0,
+                                                        color: Colors.blue[400],
+                                                        offset:
+                                                            Offset(0.0, 1.0),
+                                                      )
+                                                    ],
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50.0),
+                                                    )),
+                                                margin:
+                                                    EdgeInsets.only(top: 20.0),
+                                                padding: EdgeInsets.all(2.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    SizedBox(
+                                                      height: 8.0,
+                                                    ),
+                                                    IconButton(
+                                                      icon: Icon(Icons.remove),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          state.pedidos[index]
+                                                              .cantidad--;
+                                                          // valorTotal(_cart);
+                                                          pedidoBloc.add(
+                                                              EditPedido(
+                                                                  state.pedidos[
+                                                                      index]));
+                                                        });
+                                                      },
+                                                      color: Colors.white,
+                                                    ),
+                                                    Text(
+                                                        '${state.pedidos[index].cantidad}', //'${_cart[index].quantity}',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 22.0,
+                                                            color:
+                                                                Colors.white)),
+                                                    IconButton(
+                                                      icon: Icon(Icons.add),
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          state.pedidos[index]
+                                                              .cantidad++;
+                                                          // valorTotal(_cart);
+                                                        });
+                                                      },
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 8.0,
+                                                    )
+                                                  ],
+                                                ),
                                               )
                                             ],
-                                          ),
-                                        )
-                                      ],
-                                    )
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 38.0,
-                                ),
-                                Text('234.21', //item.price.toString(),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 24.0,
-                                        color: Colors.black))
-                              ],
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 38.0,
+                                      ),
+                                      Text('\$$multi', //item.price.toString(),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 24.0,
+                                              color: Colors.black))
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
+                            Divider(
+                              color: Colors.green,
+                            )
                           ],
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.green,
-                      )
-                    ],
-                  );
+                        );
+                      },
+                    );
+                  }
+                  return Center(child: Text('No hay pedido'));
                 },
               ),
               SizedBox(
                 width: 10.0,
               ),
               //pagoTotal(_cart),
+              BlocBuilder<PedidoBloc, PedidoState>(
+                builder: (_, state) {
+                  if (state.existePedido) {
+                    var total = 0;
+                    for (var i = 0; i < state.pedidos.length; i++) {
+                      total = total +
+                          state.pedidos[i].cantidad * state.pedidos[i].precio;
+                    }
+
+                    return Container(
+                      width: double.infinity,
+                      height: 40,
+                      padding: EdgeInsets.only(right: 20),
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'Total = \$$total',
+                        style: TextStyle(
+                            fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
               SizedBox(
                 width: 20.0,
               ),
@@ -170,21 +224,14 @@ class _CarritoPageState extends State<CarritoPage> {
                 child: RaisedButton(
                   textColor: Colors.white,
                   color: Colors.green,
-                  child: Text("PAGAR"),
-                  onPressed: () => {
-                    print('object02')
-                    /* showDialog(
-                        context: context,
-                        builder: (BuildContext context) => FancyDialog(
-                              title: "Aceptar compra",
-                              descreption: "Enviar por WhatsApp",
-                              animationType: FancyAnimation.BOTTOM_TOP,
-                              theme: FancyTheme.FANCY,
-                              gifPath: './assets/images/buy2.gif',
-                              okFun: () => {
-                                msgListaPedido(),
-                              },
-                            )) */
+                  child: Text("CONFIRMAR"),
+                  onPressed: () {
+                    final ordenProvider = BlocProvider.of<OrdenesBloc>(context);
+                    final orden = OrdenesModel(
+                        cantidad: 2, total: 56, estado: 'Confirmado');
+                    ordenProvider.add(CrearOrden(orden));
+
+                    Navigator.pushNamed(context, 'orders');
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),

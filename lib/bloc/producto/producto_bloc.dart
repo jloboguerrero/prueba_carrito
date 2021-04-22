@@ -21,20 +21,15 @@ class ProductoBloc extends Bloc<ProductoEvent, ProductoState> {
     final Map<String, dynamic> decodedData = json.decode(resp.body);
     final List<ProductoModel> productos = List();
 
-    print(decodedData);
-
     if (decodedData == null) return [];
 
     decodedData.forEach((id, prod) {
-      print(id);
-      print(prod);
       final prodTemp = ProductoModel.fromJson(prod);
       //prodTemp.id = id;
 
       productos.add(prodTemp);
     });
 
-    print(productos);
     return productos;
   }
 

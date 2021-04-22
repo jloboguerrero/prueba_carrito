@@ -1,5 +1,7 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:carritocompras/bloc/pedido/pedido_bloc.dart';
 import 'package:carritocompras/bloc/producto/producto_bloc.dart';
+import 'package:carritocompras/models/pedido_model.dart';
 import 'package:carritocompras/widgets/articulo_desc.dart';
 import 'package:carritocompras/widgets/articulo_size.dart';
 import 'package:flutter/material.dart';
@@ -122,7 +124,6 @@ class __MontoBuyNowState extends State<_MontoBuyNow> {
                                   splashRadius: 0.01,
                                   color: Colors.white,
                                   onPressed: () {
-                                    print('Uno menos');
                                     setState(() {
                                       if (_cantidad >= 1) {
                                         _cantidad--;
@@ -141,7 +142,6 @@ class __MontoBuyNowState extends State<_MontoBuyNow> {
                                   color: Colors.white,
                                   splashRadius: 0.01,
                                   onPressed: () {
-                                    print('Uno mas');
                                     setState(() {
                                       if (_cantidad < 9) {
                                         _cantidad++;
@@ -159,7 +159,21 @@ class __MontoBuyNowState extends State<_MontoBuyNow> {
             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                print(_cantidad);
+                if (_cantidad != 0) {
+                  final producto =
+                      BlocProvider.of<ProductoBloc>(context).state.producto;
+                  final pedido = PedidoModel(
+                      cantidad: _cantidad,
+                      id: producto.id,
+                      fotourl: producto.fotourl,
+                      idCarrito: 1,
+                      nombre: producto.nombre,
+                      precio: producto.precio);
+                  final pedidoBloc = BlocProvider.of<PedidoBloc>(context);
+                  //pedidoBloc.add(ActivarPedido(pedido));
+                  pedidoBloc.add(CrearPedido(pedido));
+                }
+
                 Navigator.pushNamed(context, 'lista');
               },
               child: Container(
