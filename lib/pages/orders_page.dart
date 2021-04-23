@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:carritocompras/bloc/ordenes/ordenes_bloc.dart';
 import 'package:carritocompras/helpers/alerta.dart';
 import 'package:carritocompras/models/ordenes_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrdersPage extends StatelessWidget {
   @override
@@ -75,64 +76,71 @@ class OrdersPage extends StatelessWidget {
                               ),
                             ],
                           ),
-                          Row(
-                            children: [
-                              Text(
-                                'State: ',
-                                style: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                '${state.ordenes[i].estado}',
-                                style: TextStyle(
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        (state.ordenes[i].estado == 'Completed')
-                                            ? Colors.green
-                                            : Colors.yellow),
-                              )
-                            ],
-                          ),
                           Column(
                             children: [
                               SizedBox(height: 5),
-                              IconButton(
-                                  icon: Icon(Icons.assignment_turned_in,
-                                      color: (state.ordenes[i].estado ==
-                                              'Completed')
-                                          ? Colors.green
-                                          : Colors.black),
-                                  onPressed: () {
-                                    if (state.ordenes[i].estado !=
-                                        'Completed') {
-                                      final completed = OrdenesModel(
-                                          cantidad: state.ordenes[i].cantidad,
-                                          estado: 'Completed',
-                                          total: state.ordenes[i].total,
-                                          id_base: state.ordenes[i].id_base);
-                                      ordenesBloc
-                                          .add(CompletedOrden(completed));
-
-                                      Navigator.pushNamed(context, 'orders');
-                                    }
-                                  }),
+                              Row(
+                                children: [
+                                  Text(
+                                    'State: ',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    '${state.ordenes[i].estado}',
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold,
+                                        color: (state.ordenes[i].estado ==
+                                                'Completed')
+                                            ? Colors.green
+                                            : Colors.yellow),
+                                  )
+                                ],
+                              ),
                               SizedBox(height: 5),
-                              IconButton(
-                                  icon: Icon(Icons.clear),
-                                  onPressed: () {
-                                    mostrarAlerta(context, 'Borrar Orden',
-                                        '¿Está seguro que desea borrar la orden?',
-                                        () {
-                                      ordenesBloc
-                                          .add(BorrarOrden(state.ordenes[i]));
+                              Row(
+                                children: <Widget>[
+                                  IconButton(
+                                      icon: Icon(Icons.clear),
+                                      onPressed: () {
+                                        mostrarAlerta(context, 'Erase Order',
+                                            'Are you sure you want to erase Order?',
+                                            () {
+                                          ordenesBloc.add(
+                                              BorrarOrden(state.ordenes[i]));
 
-                                      Navigator.pushNamed(context, 'lista');
-                                    });
-                                  }),
-                              SizedBox(height: 5),
+                                          Navigator.pushNamed(context, 'lista');
+                                        });
+                                      }),
+                                  IconButton(
+                                      icon: Icon(Icons.assignment_turned_in,
+                                          color: (state.ordenes[i].estado ==
+                                                  'Completed')
+                                              ? Colors.green
+                                              : Colors.black),
+                                      onPressed: () {
+                                        if (state.ordenes[i].estado !=
+                                            'Completed') {
+                                          final completed = OrdenesModel(
+                                              cantidad:
+                                                  state.ordenes[i].cantidad,
+                                              estado: 'Completed',
+                                              total: state.ordenes[i].total,
+                                              id_base:
+                                                  state.ordenes[i].id_base);
+                                          ordenesBloc
+                                              .add(CompletedOrden(completed));
+
+                                          Navigator.pushNamed(
+                                              context, 'orders');
+                                        }
+                                      }),
+                                ],
+                              )
                             ],
-                          )
+                          ),
                         ],
                       ),
                     );
@@ -141,7 +149,7 @@ class OrdersPage extends StatelessWidget {
               } else {
                 return Center(
                   child: Text(
-                    'Aún no hay ninguna orden.',
+                    'There is no Order.',
                     style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                   ),
                 );

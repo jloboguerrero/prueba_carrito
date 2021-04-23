@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:carritocompras/bloc/ordenes/ordenes_bloc.dart';
 import 'package:carritocompras/bloc/pedido/pedido_bloc.dart';
 import 'package:carritocompras/bloc/producto/producto_bloc.dart';
@@ -6,8 +9,6 @@ import 'package:carritocompras/pages/home_page.dart';
 import 'package:carritocompras/pages/list_page.dart';
 import 'package:carritocompras/pages/orders_page.dart';
 import 'package:carritocompras/pages/product_page.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() => runApp(MyApp());
 

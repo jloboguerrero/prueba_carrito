@@ -25,7 +25,6 @@ class ProductoBloc extends Bloc<ProductoEvent, ProductoState> {
 
     decodedData.forEach((id, prod) {
       final prodTemp = ProductoModel.fromJson(prod);
-      //prodTemp.id = id;
 
       productos.add(prodTemp);
     });

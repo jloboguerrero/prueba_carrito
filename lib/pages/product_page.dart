@@ -1,11 +1,12 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:carritocompras/bloc/pedido/pedido_bloc.dart';
 import 'package:carritocompras/bloc/producto/producto_bloc.dart';
 import 'package:carritocompras/models/pedido_model.dart';
 import 'package:carritocompras/widgets/articulo_desc.dart';
 import 'package:carritocompras/widgets/articulo_size.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductPage extends StatelessWidget {
   @override
@@ -176,7 +177,7 @@ class __MontoBuyNowState extends State<_MontoBuyNow> {
               child: Container(
                 margin: EdgeInsets.only(top: 12),
                 alignment: Alignment.center,
-                width: 250,
+                width: 200,
                 height: 45,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -186,7 +187,7 @@ class __MontoBuyNowState extends State<_MontoBuyNow> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'Agregar al carrito',
+                      'Add To Car',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     Icon(

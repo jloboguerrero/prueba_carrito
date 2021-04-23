@@ -23,7 +23,7 @@ mostrarAlerta(
           ),
           MaterialButton(
             onPressed: onPress,
-            child: Text('Si'),
+            child: Text('Yes'),
             elevation: 5,
             textColor: Colors.blue,
           ),
@@ -46,7 +46,7 @@ mostrarAlerta(
           ),
           CupertinoDialogAction(
             isDefaultAction: true,
-            child: Text('Si'),
+            child: Text('Yes'),
             onPressed: onPress,
           ),
         ],

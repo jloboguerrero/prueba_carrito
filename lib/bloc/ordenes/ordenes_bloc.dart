@@ -19,9 +19,7 @@ class OrdenesBloc extends Bloc<OrdenesEvent, OrdenesState> {
 
     final resp = await http.post(url, body: ordenesModel2ToJson(orden));
 
-    final decodedData = json.decode(resp.body);
-
-    print(decodedData);
+    json.decode(resp.body);
 
     return true;
   }
@@ -50,7 +48,7 @@ class OrdenesBloc extends Bloc<OrdenesEvent, OrdenesState> {
     final url = '$_url/Ordenes/$id.json';
     final resp = await http.delete(url);
 
-    print(json.decode(resp.body));
+    json.decode(resp.body);
 
     return 1;
   }
@@ -59,7 +57,7 @@ class OrdenesBloc extends Bloc<OrdenesEvent, OrdenesState> {
     final url = '$_url/Ordenes/${orden.id_base}.json';
     final resp = await http.put(url, body: ordenesModel2ToJson(orden));
 
-    print(json.decode(resp.body));
+    json.decode(resp.body);
 
     return true;
   }
@@ -67,8 +65,7 @@ class OrdenesBloc extends Bloc<OrdenesEvent, OrdenesState> {
   @override
   Stream<OrdenesState> mapEventToState(OrdenesEvent event) async* {
     if (event is CrearOrden) {
-      final test = await crearOrden(event.orden);
-      print(test);
+      await crearOrden(event.orden);
       yield state.copyWith(orden: event.orden);
     } else if (event is CargarOrdenes) {
       final lista = await cargarOrdenes();

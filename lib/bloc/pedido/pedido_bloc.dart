@@ -21,7 +21,7 @@ class PedidoBloc extends Bloc<PedidoEvent, PedidoState> {
 
     final decodedData = json.decode(resp.body);
 
-    print(decodedData);
+    decodedData;
 
     return true;
   }
@@ -33,7 +33,7 @@ class PedidoBloc extends Bloc<PedidoEvent, PedidoState> {
 
     final decodedData = json.decode(resp.body);
 
-    print(decodedData);
+    decodedData;
 
     return true;
   }
@@ -51,7 +51,6 @@ class PedidoBloc extends Bloc<PedidoEvent, PedidoState> {
     decodedData.forEach((id_base, ped) {
       final pedTemp = PedidoModel.fromJson(ped);
       pedTemp.id_base = id_base;
-      //print(id);
 
       pedidos.add(pedTemp);
     });
@@ -63,7 +62,7 @@ class PedidoBloc extends Bloc<PedidoEvent, PedidoState> {
     final url = '$_url/Pedido/$id.json';
     final resp = await http.delete(url);
 
-    print(json.decode(resp.body));
+    json.decode(resp.body);
 
     return 1;
   }
@@ -73,15 +72,13 @@ class PedidoBloc extends Bloc<PedidoEvent, PedidoState> {
     if (event is ActivarPedido) {
       yield state.copyWith(pedido: event.pedido);
     } else if (event is CrearPedido) {
-      final test = await crearPedido(event.pedido);
-      print(test);
+      await crearPedido(event.pedido);
       yield state.copyWith(pedido: event.pedido);
     } else if (event is CargarPedidos) {
       final lista = await cargarPedidos();
       yield state.copyWith(pedidos: lista);
     } else if (event is EditPedido) {
-      final edit = await editarPedido(event.pedido);
-      print(edit);
+      await editarPedido(event.pedido);
       yield state.copyWith(pedido: event.pedido);
     } else if (event is BorrarPedido) {
       await borrarPedido(event.pedido.id_base);

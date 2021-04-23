@@ -1,10 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carritocompras/bloc/ordenes/ordenes_bloc.dart';
-import 'package:carritocompras/bloc/pedido/pedido_bloc.dart';
-import 'package:carritocompras/models/ordenes_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:carritocompras/bloc/ordenes/ordenes_bloc.dart';
+import 'package:carritocompras/bloc/pedido/pedido_bloc.dart';
+import 'package:carritocompras/models/ordenes_model.dart';
+import 'package:carritocompras/helpers/alerta.dart';
 
 class CarritoPage extends StatefulWidget {
   @override
@@ -17,7 +19,7 @@ class _CarritoPageState extends State<CarritoPage> {
     final pedidoBloc = BlocProvider.of<PedidoBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalle del pedido',
+        title: Text('Details',
             style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w400)),
         centerTitle: false,
         flexibleSpace: Container(
@@ -36,9 +38,7 @@ class _CarritoPageState extends State<CarritoPage> {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
-            setState(() {
-              //_cart.length;
-            });
+            setState(() {});
           },
           color: Colors.white,
         ),
@@ -59,7 +59,6 @@ class _CarritoPageState extends State<CarritoPage> {
                       itemBuilder: (context, index) {
                         final multi = state.pedidos[index].cantidad *
                             state.pedidos[index].precio;
-
                         return Column(
                           children: <Widget>[
                             Padding(
@@ -75,7 +74,7 @@ class _CarritoPageState extends State<CarritoPage> {
                                         height: 100,
                                         child: CachedNetworkImage(
                                             imageUrl:
-                                                '${state.pedidos[index].fotourl}', //'${item.image}' + '?alt=media',
+                                                '${state.pedidos[index].fotourl}',
                                             fit: BoxFit.contain,
                                             placeholder: (_, __) {
                                               return Center(
@@ -88,8 +87,7 @@ class _CarritoPageState extends State<CarritoPage> {
                                       SizedBox(width: 30),
                                       Column(
                                         children: <Widget>[
-                                          Text(
-                                              '${state.pedidos[index].nombre}', //item.name,
+                                          Text('${state.pedidos[index].nombre}',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 16.0,
@@ -136,7 +134,6 @@ class _CarritoPageState extends State<CarritoPage> {
                                                           setState(() {
                                                             state.pedidos[index]
                                                                 .cantidad--;
-                                                            // valorTotal(_cart);
                                                             pedidoBloc.add(
                                                                 EditPedido(state
                                                                         .pedidos[
@@ -147,7 +144,7 @@ class _CarritoPageState extends State<CarritoPage> {
                                                       color: Colors.white,
                                                     ),
                                                     Text(
-                                                        '${state.pedidos[index].cantidad}', //'${_cart[index].quantity}',
+                                                        '${state.pedidos[index].cantidad}',
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -180,13 +177,42 @@ class _CarritoPageState extends State<CarritoPage> {
                                         ],
                                       ),
                                       SizedBox(
-                                        width: 38.0,
+                                        width: 35.0,
                                       ),
-                                      Text('\$$multi', //item.price.toString(),
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 24.0,
-                                              color: Colors.black))
+                                      Column(
+                                        children: [
+                                          SizedBox(height: 5),
+                                          Text('\$$multi',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 24.0,
+                                                  color: Colors.black)),
+                                          SizedBox(height: 5),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.delete,
+                                              color: Colors.red,
+                                            ),
+                                            splashRadius: 0.01,
+                                            onPressed: () {
+                                              mostrarAlerta(
+                                                  context,
+                                                  'Erase Product',
+                                                  'Are you sure you want to erase Product?',
+                                                  () {
+                                                pedidoBloc.add(BorrarPedido(
+                                                    pedidoBloc
+                                                        .state.pedidos[index]));
+                                                Navigator.pushNamed(
+                                                    context, 'lista');
+                                              });
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        width: 20.0,
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -200,13 +226,12 @@ class _CarritoPageState extends State<CarritoPage> {
                       },
                     );
                   }
-                  return Center(child: Text('No hay pedido'));
+                  return Center(child: Text('There is no Order'));
                 },
               ),
               SizedBox(
                 width: 10.0,
               ),
-              //pagoTotal(_cart),
               BlocBuilder<PedidoBloc, PedidoState>(
                 builder: (_, state) {
                   if (state.existePedido) {
@@ -242,7 +267,7 @@ class _CarritoPageState extends State<CarritoPage> {
                 child: RaisedButton(
                   textColor: Colors.white,
                   color: Colors.green,
-                  child: Text("CONFIRMAR", style: TextStyle(fontSize: 19)),
+                  child: Text("CONFIRM", style: TextStyle(fontSize: 19)),
                   onPressed: () {
                     final ordenProvider = BlocProvider.of<OrdenesBloc>(context);
 
@@ -257,15 +282,22 @@ class _CarritoPageState extends State<CarritoPage> {
                               pedidoBloc.state.pedidos[i].precio);
                     }
 
-                    final orden = OrdenesModel(
-                        cantidad: cantidad, total: total, estado: 'Pending');
-                    ordenProvider.add(CrearOrden(orden));
+                    if (total > 0) {
+                      final orden = OrdenesModel(
+                          cantidad: cantidad,
+                          total: total,
+                          estado: 'Pending..');
+                      ordenProvider.add(CrearOrden(orden));
 
-                    for (var i = 0; i < pedidoBloc.state.pedidos.length; i++) {
-                      pedidoBloc.add(BorrarPedido(pedidoBloc.state.pedidos[i]));
+                      for (var i = 0;
+                          i < pedidoBloc.state.pedidos.length;
+                          i++) {
+                        pedidoBloc
+                            .add(BorrarPedido(pedidoBloc.state.pedidos[i]));
+                      }
+
+                      Navigator.pushNamed(context, 'orders');
                     }
-
-                    Navigator.pushNamed(context, 'orders');
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30.0),
