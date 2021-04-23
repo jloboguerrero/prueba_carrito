@@ -18,7 +18,7 @@ class ListPage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Weapons',
             style: TextStyle(
-                fontSize: 24,
+                fontSize: 28,
                 color: Colors.white,
                 fontWeight: FontWeight.w400)),
         centerTitle: false,
@@ -54,7 +54,7 @@ class ListPage extends StatelessWidget {
             splashRadius: 0.5,
             icon: Icon(
               Icons.list_alt,
-              size: 25,
+              size: 30,
             ),
             onPressed: () {
               Navigator.pushNamed(context, 'orders');
@@ -116,14 +116,14 @@ class ListPage extends StatelessWidget {
                         children: <Widget>[
                           Container(
                             margin: EdgeInsets.only(left: 10),
-                            width: 25,
-                            height: 25,
+                            width: 30,
+                            height: 30,
                             color: Colors.black38,
                             child: Center(
                                 child: Text(
                               '$cantidad',
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
+                                  TextStyle(color: Colors.white, fontSize: 18),
                             )),
                           ),
                           Row(
@@ -146,7 +146,7 @@ class ListPage extends StatelessWidget {
                             margin: EdgeInsets.only(right: 10),
                             child: Text('\$ $monto',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 15)),
+                                    color: Colors.white, fontSize: 18)),
                           )
                         ],
                       );
@@ -163,7 +163,7 @@ class ListPage extends StatelessWidget {
                                 child: Text(
                               '0',
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 15),
+                                  TextStyle(color: Colors.white, fontSize: 18),
                             )),
                           ),
                           Text(
@@ -177,7 +177,7 @@ class ListPage extends StatelessWidget {
                             margin: EdgeInsets.only(right: 10),
                             child: Text('\$ 0',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 15)),
+                                    color: Colors.white, fontSize: 18)),
                           )
                         ],
                       );
@@ -265,12 +265,13 @@ class ListaProductos extends StatelessWidget {
                               final productoBloc =
                                   BlocProvider.of<ProductoBloc>(context);
                               final newProduct = ProductoModel(
-                                  descripcion: '${productos[i].descripcion}',
+                                  descripcion: productos[i].descripcion,
                                   disponible: true,
-                                  fotourl: '${productos[i].fotourl}',
+                                  fotourl: productos[i].fotourl,
                                   id: productos[i].id,
-                                  nombre: '${productos[i].nombre}',
-                                  precio: productos[i].precio);
+                                  nombre: productos[i].nombre,
+                                  precio: productos[i].precio,
+                                  desc_largo: productos[i].desc_largo);
                               productoBloc.add(AbreProducto(newProduct));
                               Navigator.pushNamed(context, 'descripcion');
                             }),

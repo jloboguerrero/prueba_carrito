@@ -18,7 +18,8 @@ class ProductoModel {
       this.fotourl,
       this.id,
       this.nombre,
-      this.precio});
+      this.precio,
+      this.desc_largo});
 
   String descripcion;
   bool disponible;
@@ -26,6 +27,7 @@ class ProductoModel {
   int id;
   String nombre;
   int precio;
+  String desc_largo;
 
   ProductoModel copyWith({
     String descripcion,
@@ -34,6 +36,7 @@ class ProductoModel {
     int id,
     String nombre,
     int precio,
+    String desc_largo,
   }) =>
       ProductoModel(
           descripcion: descripcion ?? this.descripcion,
@@ -41,7 +44,8 @@ class ProductoModel {
           fotourl: fotourl ?? this.fotourl,
           id: id ?? this.id,
           nombre: nombre ?? this.nombre,
-          precio: precio ?? this.precio);
+          precio: precio ?? this.precio,
+          desc_largo: desc_largo ?? this.desc_largo);
 
   factory ProductoModel.fromJson(Map<String, dynamic> json) => ProductoModel(
         descripcion: json["descripcion"],
@@ -50,6 +54,7 @@ class ProductoModel {
         id: json["id"],
         nombre: json["nombre"],
         precio: json["precio"],
+        desc_largo: json["desc_largo"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -59,5 +64,6 @@ class ProductoModel {
         "id": id,
         "nombre": nombre,
         "precio": precio,
+        "desc_largo": desc_largo,
       };
 }

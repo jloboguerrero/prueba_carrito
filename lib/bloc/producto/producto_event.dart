@@ -11,8 +11,6 @@ class ActivarProducto extends ProductoEvent {
 class CargarProductos extends ProductoEvent {}
 
 class AbreProducto extends ProductoEvent {
-  //final String fotourl;
   final ProductoModel producto;
-  //AbreProducto(this.fotourl, this.producto);
   AbreProducto(this.producto);
 }

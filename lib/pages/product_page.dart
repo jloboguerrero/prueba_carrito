@@ -17,14 +17,13 @@ class ProductPage extends StatelessWidget {
             children: <Widget>[
               Hero(tag: 'artículo 1', child: ArticuloSizePreview()),
               Positioned(
-                top: 80,
+                top: 30,
                 child: FloatingActionButton(
                   onPressed: () {
                     Navigator.pushNamed(context, 'lista');
                   },
                   elevation: 0,
-                  child:
-                      Icon(Icons.chevron_left, color: Colors.white, size: 60),
+                  child: Icon(Icons.cancel, color: Colors.white, size: 30),
                   highlightElevation: 0,
                   backgroundColor: Colors.transparent,
                 ),
@@ -40,8 +39,7 @@ class ProductPage extends StatelessWidget {
                       children: <Widget>[
                         ArticuloDescripcion(
                           titulo: '${state.producto.nombre}',
-                          descripcion:
-                              "The Nike Air Max 720 goes bigger than ever before with Nike's taller Air unit yet, offering more air underfoot for unimaginable, all-day comfort. Has Air Max gone too far? We hope so.",
+                          descripcion: '${state.producto.desc_largo}',
                         ),
                         _MontoBuyNow(),
                       ],

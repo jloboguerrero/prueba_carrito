@@ -14,11 +14,19 @@ mostrarAlerta(
         content: Text(subtitulo),
         actions: <Widget>[
           MaterialButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('No'),
+            elevation: 5,
+            textColor: Colors.blue,
+          ),
+          MaterialButton(
             onPressed: onPress,
             child: Text('Si'),
             elevation: 5,
             textColor: Colors.blue,
-          )
+          ),
         ],
       ),
     );
@@ -31,9 +39,16 @@ mostrarAlerta(
         actions: <Widget>[
           CupertinoDialogAction(
             isDefaultAction: true,
+            child: Text('No'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          CupertinoDialogAction(
+            isDefaultAction: true,
             child: Text('Si'),
             onPressed: onPress,
-          )
+          ),
         ],
       ),
     );

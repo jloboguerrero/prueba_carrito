@@ -1,10 +1,5 @@
 part of 'producto_bloc.dart';
 
-/* @immutable
-abstract class ProductoState {}
-
-class ProductoInitial extends ProductoState {} */
-
 class ProductoState {
   final bool existeProducto;
   final ProductoModel producto;

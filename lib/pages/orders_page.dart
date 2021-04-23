@@ -12,7 +12,8 @@ class OrdersPage extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Orders', style: TextStyle(fontSize: 24.0)),
+          title: Text('Orders',
+              style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w400)),
           centerTitle: false,
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -42,14 +43,12 @@ class OrdersPage extends StatelessWidget {
         body: Container(
           width: double.infinity,
           height: (MediaQuery.of(context).size.height -
-                  MediaQuery.of(context).size.height * 0.14) /
-              1.25,
+              MediaQuery.of(context).size.height * 0.14),
           child: BlocBuilder<OrdenesBloc, OrdenesState>(
             builder: (context, state) {
               if (state.existeOrden) {
                 return ListView.builder(
                   itemCount: state.ordenes.length,
-                  physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (_, i) {
                     return Card(
                       elevation: 3,
@@ -61,18 +60,18 @@ class OrdersPage extends StatelessWidget {
                             children: <Widget>[
                               Text(
                                 'Id: ${state.ordenes[i].id_base}',
-                                style: TextStyle(fontSize: 13),
+                                style: TextStyle(fontSize: 11),
                               ),
                               SizedBox(height: 10),
                               Text(
                                 'Quantity: ${state.ordenes[i].cantidad}',
-                                style: TextStyle(fontSize: 18),
+                                style: TextStyle(fontSize: 17),
                               ),
                               SizedBox(height: 5),
                               Text(
                                 'Total: \$${state.ordenes[i].total}',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                    fontSize: 17, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -81,12 +80,12 @@ class OrdersPage extends StatelessWidget {
                               Text(
                                 'State: ',
                                 style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                    fontSize: 17, fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 '${state.ordenes[i].estado}',
                                 style: TextStyle(
-                                    fontSize: 18,
+                                    fontSize: 17,
                                     fontWeight: FontWeight.bold,
                                     color:
                                         (state.ordenes[i].estado == 'Completed')
@@ -123,7 +122,7 @@ class OrdersPage extends StatelessWidget {
                                   icon: Icon(Icons.clear),
                                   onPressed: () {
                                     mostrarAlerta(context, 'Borrar Orden',
-                                        'Al dar ok se borrará la orden, ¿Seguro?',
+                                        '¿Está seguro que desea borrar la orden?',
                                         () {
                                       ordenesBloc
                                           .add(BorrarOrden(state.ordenes[i]));
@@ -140,15 +139,10 @@ class OrdersPage extends StatelessWidget {
                   },
                 );
               } else {
-                return Container(
-                  width: double.infinity,
-                  height: 600,
-                  color: Colors.yellow,
-                  child: Center(
-                    child: Text(
-                      'Aún no hay ninguna orden.',
-                      style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                    ),
+                return Center(
+                  child: Text(
+                    'Aún no hay ninguna orden.',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
                   ),
                 );
               }

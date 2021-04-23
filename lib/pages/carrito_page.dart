@@ -18,11 +18,20 @@ class _CarritoPageState extends State<CarritoPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Detalle del pedido',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-                color: Colors.white)),
-        centerTitle: true,
+            style: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w400)),
+        centerTitle: false,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                Color(0xff91CF50),
+                Color(0xff034D53),
+              ])),
+        ),
+        elevation: 0.0,
+        toolbarHeight: MediaQuery.of(context).size.height * 0.15,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -119,16 +128,21 @@ class _CarritoPageState extends State<CarritoPage> {
                                                     ),
                                                     IconButton(
                                                       icon: Icon(Icons.remove),
+                                                      splashRadius: 0.01,
                                                       onPressed: () {
-                                                        setState(() {
-                                                          state.pedidos[index]
-                                                              .cantidad--;
-                                                          // valorTotal(_cart);
-                                                          pedidoBloc.add(
-                                                              EditPedido(
-                                                                  state.pedidos[
-                                                                      index]));
-                                                        });
+                                                        if (state.pedidos[index]
+                                                                .cantidad >
+                                                            0) {
+                                                          setState(() {
+                                                            state.pedidos[index]
+                                                                .cantidad--;
+                                                            // valorTotal(_cart);
+                                                            pedidoBloc.add(
+                                                                EditPedido(state
+                                                                        .pedidos[
+                                                                    index]));
+                                                          });
+                                                        }
                                                       },
                                                       color: Colors.white,
                                                     ),
@@ -142,12 +156,16 @@ class _CarritoPageState extends State<CarritoPage> {
                                                                 Colors.white)),
                                                     IconButton(
                                                       icon: Icon(Icons.add),
+                                                      splashRadius: 0.01,
                                                       onPressed: () {
-                                                        setState(() {
-                                                          state.pedidos[index]
-                                                              .cantidad++;
-                                                          // valorTotal(_cart);
-                                                        });
+                                                        if (state.pedidos[index]
+                                                                .cantidad <
+                                                            9) {
+                                                          setState(() {
+                                                            state.pedidos[index]
+                                                                .cantidad++;
+                                                          });
+                                                        }
                                                       },
                                                       color: Colors.white,
                                                     ),
@@ -224,7 +242,7 @@ class _CarritoPageState extends State<CarritoPage> {
                 child: RaisedButton(
                   textColor: Colors.white,
                   color: Colors.green,
-                  child: Text("CONFIRMAR"),
+                  child: Text("CONFIRMAR", style: TextStyle(fontSize: 19)),
                   onPressed: () {
                     final ordenProvider = BlocProvider.of<OrdenesBloc>(context);
 

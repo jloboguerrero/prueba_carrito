@@ -41,9 +41,7 @@ class ProductoBloc extends Bloc<ProductoEvent, ProductoState> {
       final lista = await cargarProductos();
       yield state.copyWith(productos: lista);
     } else if (event is AbreProducto) {
-      yield state.copyWith(
-          //producto: state.producto.copyWith(fotourl: event.fotourl)
-          producto: event.producto);
+      yield state.copyWith(producto: event.producto);
     }
   }
 }
