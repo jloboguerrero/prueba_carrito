@@ -21,6 +21,14 @@ class OrdenesModel {
   int total;
   String id_base;
 
+  OrdenesModel copyWith(
+          {int cantidad, String estado, int total, String id_base}) =>
+      OrdenesModel(
+          cantidad: cantidad ?? this.cantidad,
+          estado: estado ?? this.estado,
+          total: total ?? this.total,
+          id_base: id_base ?? this.id_base);
+
   factory OrdenesModel.fromJson(Map<String, dynamic> json) => OrdenesModel(
         cantidad: json["cantidad"],
         estado: json["estado"],

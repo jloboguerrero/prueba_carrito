@@ -95,7 +95,7 @@ class __MontoBuyNowState extends State<_MontoBuyNow> {
                 ),
                 Spacer(),
                 Bounce(
-                    delay: Duration(seconds: 1),
+                    delay: Duration(milliseconds: 300),
                     from: 15,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -170,23 +170,32 @@ class __MontoBuyNowState extends State<_MontoBuyNow> {
                       nombre: producto.nombre,
                       precio: producto.precio);
                   final pedidoBloc = BlocProvider.of<PedidoBloc>(context);
-                  //pedidoBloc.add(ActivarPedido(pedido));
                   pedidoBloc.add(CrearPedido(pedido));
                 }
 
                 Navigator.pushNamed(context, 'lista');
               },
               child: Container(
+                margin: EdgeInsets.only(top: 12),
                 alignment: Alignment.center,
-                width: 150,
+                width: 250,
                 height: 45,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   color: Color(0xff91CF50),
                 ),
-                child: Text(
-                  'Agregar al carrito',
-                  style: TextStyle(color: Colors.white),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      'Agregar al carrito',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    Icon(
+                      Icons.shopping_cart,
+                      color: Colors.white,
+                    )
+                  ],
                 ),
               ),
             )

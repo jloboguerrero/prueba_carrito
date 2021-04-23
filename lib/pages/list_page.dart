@@ -12,8 +12,6 @@ class ListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final productoBloc = BlocProvider.of<ProductoBloc>(context);
     final pedidoBloc = BlocProvider.of<PedidoBloc>(context);
-    //final newProduct = ProductoModel();
-    //productoBloc.add(ActivarProducto(newProduct));
     productoBloc.add(CargarProductos());
     pedidoBloc.add(CargarPedidos());
     return Scaffold(
@@ -55,7 +53,7 @@ class ListPage extends StatelessWidget {
             splashColor: Colors.transparent,
             splashRadius: 0.5,
             icon: Icon(
-              Icons.payment_sharp,
+              Icons.list_alt,
               size: 25,
             ),
             onPressed: () {
@@ -128,12 +126,21 @@ class ListPage extends StatelessWidget {
                                   TextStyle(color: Colors.white, fontSize: 15),
                             )),
                           ),
-                          Text(
-                            'Ver carrito',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 22.0,
-                                color: Colors.white),
+                          Row(
+                            children: [
+                              Text(
+                                'Ver carrito',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22.0,
+                                    color: Colors.white),
+                              ),
+                              SizedBox(width: 5),
+                              Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              )
+                            ],
                           ),
                           Container(
                             margin: EdgeInsets.only(right: 10),
@@ -220,15 +227,20 @@ class ListaProductos extends StatelessWidget {
                                       Text(
                                         '${productos[i].nombre}',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
                                       ),
                                       SizedBox(height: 10),
-                                      Text('${productos[i].descripcion}'),
+                                      Text(
+                                        '${productos[i].descripcion}',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
                                       SizedBox(height: 30),
                                       Text(
                                         '\$${productos[i].precio} Dolars',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
                                       ),
                                     ],
                                   ),
@@ -238,8 +250,14 @@ class ListaProductos extends StatelessWidget {
                                     child: Container(
                                   width: 120,
                                   height: 120,
-                                  child:
-                                      Image.network('${productos[i].fotourl}'),
+                                  child: FadeInImage(
+                                    placeholder:
+                                        AssetImage('assets/jar-loading.gif'),
+                                    image:
+                                        NetworkImage('${productos[i].fotourl}'),
+                                    fadeInDuration: Duration(milliseconds: 200),
+                                    fit: BoxFit.cover,
+                                  ),
                                 ))
                               ],
                             ),

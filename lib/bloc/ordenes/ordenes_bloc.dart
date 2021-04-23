@@ -14,10 +14,10 @@ class OrdenesBloc extends Bloc<OrdenesEvent, OrdenesState> {
 
   final String _url = 'https://carrito-b6dce-default-rtdb.firebaseio.com';
 
-  Future<bool> crearOrden(OrdenesModel pedido) async {
+  Future<bool> crearOrden(OrdenesModel orden) async {
     final url = '$_url/Ordenes.json';
 
-    final resp = await http.post(url, body: ordenesModel2ToJson(pedido));
+    final resp = await http.post(url, body: ordenesModel2ToJson(orden));
 
     final decodedData = json.decode(resp.body);
 
@@ -46,6 +46,24 @@ class OrdenesBloc extends Bloc<OrdenesEvent, OrdenesState> {
     return ordenes;
   }
 
+  Future<int> borrarOrden(String id) async {
+    final url = '$_url/Ordenes/$id.json';
+    final resp = await http.delete(url);
+
+    print(json.decode(resp.body));
+
+    return 1;
+  }
+
+  Future<bool> updateOrden(OrdenesModel orden) async {
+    final url = '$_url/Ordenes/${orden.id_base}.json';
+    final resp = await http.put(url, body: ordenesModel2ToJson(orden));
+
+    print(json.decode(resp.body));
+
+    return true;
+  }
+
   @override
   Stream<OrdenesState> mapEventToState(OrdenesEvent event) async* {
     if (event is CrearOrden) {
@@ -55,6 +73,12 @@ class OrdenesBloc extends Bloc<OrdenesEvent, OrdenesState> {
     } else if (event is CargarOrdenes) {
       final lista = await cargarOrdenes();
       yield state.copyWith(ordenes: lista);
+    } else if (event is BorrarOrden) {
+      await borrarOrden(event.orden.id_base);
+      yield state.copyWith(orden: event.orden);
+    } else if (event is CompletedOrden) {
+      await updateOrden(event.orden);
+      yield state.copyWith(orden: event.orden);
     }
   }
 }

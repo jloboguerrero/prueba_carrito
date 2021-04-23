@@ -1,4 +1,6 @@
 import 'package:carritocompras/bloc/ordenes/ordenes_bloc.dart';
+import 'package:carritocompras/helpers/alerta.dart';
+import 'package:carritocompras/models/ordenes_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,7 +12,7 @@ class OrdersPage extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Ordenes', style: TextStyle(fontSize: 24.0)),
+          title: Text('Orders', style: TextStyle(fontSize: 24.0)),
           centerTitle: false,
           flexibleSpace: Container(
             decoration: BoxDecoration(
@@ -63,37 +65,90 @@ class OrdersPage extends StatelessWidget {
                               ),
                               SizedBox(height: 10),
                               Text(
-                                'Cantidad: ${state.ordenes[i].cantidad}',
+                                'Quantity: ${state.ordenes[i].cantidad}',
                                 style: TextStyle(fontSize: 18),
                               ),
                               SizedBox(height: 5),
                               Text(
-                                'Monto: ${state.ordenes[i].total}',
+                                'Total: \$${state.ordenes[i].total}',
                                 style: TextStyle(
                                     fontSize: 18, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
-                          Text(
-                            'Estado: ${state.ordenes[i].estado}',
-                            style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                          Row(
+                            children: [
+                              Text(
+                                'State: ',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '${state.ordenes[i].estado}',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        (state.ordenes[i].estado == 'Completed')
+                                            ? Colors.green
+                                            : Colors.yellow),
+                              )
+                            ],
                           ),
-                          IconButton(
-                              icon: Icon(Icons.add_circle_outline),
-                              onPressed: () {
-                                print('change');
-                              })
+                          Column(
+                            children: [
+                              SizedBox(height: 5),
+                              IconButton(
+                                  icon: Icon(Icons.assignment_turned_in,
+                                      color: (state.ordenes[i].estado ==
+                                              'Completed')
+                                          ? Colors.green
+                                          : Colors.black),
+                                  onPressed: () {
+                                    if (state.ordenes[i].estado !=
+                                        'Completed') {
+                                      final completed = OrdenesModel(
+                                          cantidad: state.ordenes[i].cantidad,
+                                          estado: 'Completed',
+                                          total: state.ordenes[i].total,
+                                          id_base: state.ordenes[i].id_base);
+                                      ordenesBloc
+                                          .add(CompletedOrden(completed));
+
+                                      Navigator.pushNamed(context, 'orders');
+                                    }
+                                  }),
+                              SizedBox(height: 5),
+                              IconButton(
+                                  icon: Icon(Icons.clear),
+                                  onPressed: () {
+                                    mostrarAlerta(context, 'Borrar Orden',
+                                        'Al dar ok se borrará la orden, ¿Seguro?',
+                                        () {
+                                      ordenesBloc
+                                          .add(BorrarOrden(state.ordenes[i]));
+
+                                      Navigator.pushNamed(context, 'lista');
+                                    });
+                                  }),
+                              SizedBox(height: 5),
+                            ],
+                          )
                         ],
                       ),
                     );
                   },
                 );
               } else {
-                return Center(
-                  child: Text(
-                    'Aún no hay ninguna orden.',
-                    style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                return Container(
+                  width: double.infinity,
+                  height: 600,
+                  color: Colors.yellow,
+                  child: Center(
+                    child: Text(
+                      'Aún no hay ninguna orden.',
+                      style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                    ),
                   ),
                 );
               }

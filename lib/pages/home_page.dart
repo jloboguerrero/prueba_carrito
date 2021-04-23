@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
                 Image.asset('assets/logo-min.png', width: 160, height: 160),
                 SizedBox(height: 30),
                 Text(
-                  'Men at\n Arms',
+                  'Man at\n Arms',
                   style: TextStyle(fontSize: 30.0, color: Colors.white),
                 ),
               ],

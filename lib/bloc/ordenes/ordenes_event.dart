@@ -9,3 +9,13 @@ class CrearOrden extends OrdenesEvent {
 }
 
 class CargarOrdenes extends OrdenesEvent {}
+
+class CompletedOrden extends OrdenesEvent {
+  final OrdenesModel orden;
+  CompletedOrden(this.orden);
+}
+
+class BorrarOrden extends OrdenesEvent {
+  final OrdenesModel orden;
+  BorrarOrden(this.orden);
+}
